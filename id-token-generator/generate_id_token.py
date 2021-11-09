@@ -64,6 +64,8 @@ class ExtractTokenRequestHandler(BaseHTTPRequestHandler):
                 self.wfile.write(bytes(message, "utf8"))
                 return
 
+            log(params)
+
             id_token = params.get(b'id_token')[0].decode("utf-8")
 
             self.send_response_only(code=200)
@@ -118,7 +120,8 @@ if __name__ == "__main__":
     # Parse CLI args
     args = parser.parse_args(sys.argv[1:])
     if not args.key:
-        args.key = f"{os.getcwd()}/cert/server.pem"
+        workspace = Path(__file__).parent.resolve()
+        args.key = f"{workspace}/cert/server.pem"
 
     LOGGING_ENABLED = args.verbose
 
